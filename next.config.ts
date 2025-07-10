@@ -3,15 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true, // Disables ESLint during builds
+    ignoreDuringBuilds: true,
   },
   output: 'export',
-  basePath: '/smartfood-restaurant',
+  // Remove basePath for Vercel:
+  // basePath: '/smartfood-restaurant',  // ← Comment out or delete this line
   images: { 
     unoptimized: true,
-    domains: ['images.unsplash.com'], // Add your image host domains
+    domains: ['images.unsplash.com'],
   },
-  // Optional: Add compiler for styled-components if used
   compiler: {
     styledComponents: true,
   }
