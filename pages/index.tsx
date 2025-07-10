@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { FiClock, FiPhone, FiMapPin, FiMail } from 'react-icons/fi';
+import { FiClock, FiPhone, FiMapPin,} from 'react-icons/fi';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('all');
