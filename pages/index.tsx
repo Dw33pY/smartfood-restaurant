@@ -202,7 +202,7 @@ function LoadingSkeleton() {
     <div className="min-h-screen bg-gray-100">
       {/* Header Skeleton */}
       <div className="h-16 bg-gray-200 animate-pulse"></div>
-      
+      {/* */}
       {/* Hero Skeleton */}
       <div className="h-[80vh] bg-gray-300 animate-pulse"></div>
       
@@ -224,4 +224,5 @@ function LoadingSkeleton() {
       </div>
     </div>
   );
+  
 }
