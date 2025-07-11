@@ -2,8 +2,25 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { FiClock, FiPhone, FiMapPin, FiX, FiMenu } from 'react-icons/fi';
 
+// Types for menu items
+type MenuCategory = 'all' | 'starters' | 'mains' | 'desserts';
+
+interface MenuItemType {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+}
+
+type MenuData = {
+  starters: MenuItemType[];
+  mains: MenuItemType[];
+  desserts: MenuItemType[];
+};
+
 // Mock data with Unsplash image URLs
-const menuItems = {
+const menuItems: MenuData = {
   starters: [
     { 
       id: 1, 
@@ -65,7 +82,7 @@ const galleryImages = [
 ];
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState<MenuCategory>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -131,8 +148,12 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section id="home" className="relative h-[80vh] bg-gray-900 text-white">
+      {/* Hero Section with Background Image */}
+      <section id="home" className="relative h-[80vh] text-white">
+        <div 
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1800&q=80')] bg-cover bg-center"
+          style={{ filter: 'brightness(0.7)' }}
+        />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <div className="text-center px-4 animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">SmartFood Restaurant</h1>
@@ -156,7 +177,7 @@ export default function Home() {
             {['All', 'Starters', 'Mains', 'Desserts'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab.toLowerCase())}
+                onClick={() => setActiveTab(tab.toLowerCase() as MenuCategory)}
                 className={`px-6 py-2 mx-2 whitespace-nowrap rounded-full transition-colors duration-300 ${
                   activeTab === tab.toLowerCase() 
                     ? 'bg-red-600 text-white' 
@@ -170,11 +191,9 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {activeTab === 'all' ? (
-              <>
-                {[...menuItems.starters, ...menuItems.mains, ...menuItems.desserts].map((item) => (
-                  <MenuItem key={item.id} item={item} />
-                ))}
-              </>
+              [...menuItems.starters, ...menuItems.mains, ...menuItems.desserts].map((item) => (
+                <MenuItem key={item.id} item={item} />
+              ))
             ) : (
               menuItems[activeTab]?.map((item) => (
                 <MenuItem key={item.id} item={item} />
@@ -299,7 +318,7 @@ export default function Home() {
 }
 
 // Menu Item Component
-function MenuItem({ item }: { item: { name: string; description: string; price: string; image: string } }) {
+function MenuItem({ item }: { item: MenuItemType }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="bg-gray-200 h-48 mb-4 rounded-lg overflow-hidden">
@@ -318,28 +337,11 @@ function MenuItem({ item }: { item: { name: string; description: string; price: 
 
 function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header Skeleton */}
-      <div className="h-16 bg-gray-200 animate-pulse"></div>
-      
-      {/* Hero Skeleton */}
-      <div className="h-[80vh] bg-gray-300 animate-pulse"></div>
-      
-      {/* Menu Section Skeleton */}
-      <div className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="h-10 w-1/3 bg-gray-300 rounded mx-auto mb-12 animate-pulse"></div>
-          <div className="flex justify-center gap-4 mb-8">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-10 w-24 bg-gray-300 rounded-full animate-pulse"></div>
-            ))}
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-64 bg-gray-300 rounded-lg animate-pulse"></div>
-            ))}
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      {/* Logo Fade-in Animation */}
+      <div className="animate-pulse animate-fade-in">
+        <div className="text-4xl font-bold text-red-600 mb-4">SMARTFOOD</div>
+        <div className="h-2 w-32 bg-red-400 rounded-full mx-auto"></div>
       </div>
     </div>
   );
